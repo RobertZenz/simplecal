@@ -1,0 +1,103 @@
+simplecal
+=========
+
+A cal like tool which uses Monday as weekstart, prints weeknumbers and allows to
+define custom formats for the output.
+
+The main differences are:
+
+ * Monday as weekstart.
+ * Weeknumbers with different ways to calculate them.
+ * Deterministic output, the output does not differ depending on the displayed
+   month or year, it always looks the same.
+ * The formatting of every thing can be specified.
+
+
+License
+-------
+
+simplecal is licensed under GNU GPLv3+.
+
+
+Usage
+-----
+
+The parameters it supports:
+
+    USAGE: simplecal [OPTION] [MONTH [YEAR]]
+
+      -A, --after=VALUE          The months to display after the current date.
+                                 Defaults to 0.
+      -B, --before=VALUE         The months to display before the current date.
+                                 Defaults to 0.
+      -h, --help                 Print this help text.
+      -r, --months-in-row=VALUE  Print VALUE number of months in a single row.
+          --row=VALUE            Defaults to 3.
+      -t, --no-highlight-today   If today should not be highlighted in the output.
+                                 By default today is being highlighted by making
+                                 it bold in the output.
+                                 Has no effect if --today-format is provided.
+      -w, --weeks[=CALCULATION]  Display week numbers in front of each week.
+                                 CALCULATION is optional and can be of:
+                                   * FIRST / FIRST_DAY / ANY: The first day of
+                                     the year is the start of the first week.
+                                   * FOUR / FOUR_DAYS / ISO / THURSDAY:
+                                     The first week with four days/includes
+                                     Thursday is the first week of the year.
+                                   * FULL / FULL_WEEK / MONDAY: The first week
+                                     with seven days/includes Monday is the first
+                                     week of the year.
+                                 Defaults to ISO.
+      -y, --year[=YEAR]          Display the whole year, either the current or
+                                 the given one. This is a shortcut for:
+                                   --after=11 1 YEAR
+                                 Defaults to the current year.
+
+    Number formats               The following options allow you to define format
+                                 strings as they are being used by printf.
+                                 Please consult the printf manual for available
+                                 options. Note that the format only can accept
+                                 a single number as parameter.
+
+      --day-format=FORMAT        Use this format for formatting days.
+                                 Defaults to "%2i".
+      --today-format=FORMAT      Use this format for formatting today.
+                                 Defaults to "\033[1m%2i\033[0m" unless
+                                 -t/--no-highlight-today is provided, in which
+                                 case it defaults to "%2i".
+      --week-format=FORMAT       Use this format for formatting week-numbers.
+                                 Defaults to "%2i".
+
+    Date formats                 The following options allow you to define format
+                                 strings as they are being used by strftime.
+                                 Please consult the strftime manual for available
+                                 options. Note that the format accepts a single
+                                 date struct as parameter.
+
+      --day-header-format= FOMAT  Use this format for formatting day names in.
+                                 the header of the month.
+                                 Defaults to "%a".
+      --month-header-format=FORMAT Use this format for formatting the month
+                                 name/header of the month.
+                                 Defaults to "%B %Y".
+
+
+
+Examples
+--------
+
+To print the current month:
+
+    simplecal
+
+To get the whole year:
+
+    simplecal -y
+
+To get the whole year with week numbers:
+
+    simplecal -wy
+
+Today with a custom highlight string (in this case a conky color):
+
+    simplecal --today-format="\${color #ce5c00}%2i\${color}"
